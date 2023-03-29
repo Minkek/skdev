@@ -1,0 +1,255 @@
+# ----------------------
+# Skdev v1.0
+# 
+# Made by Minkek
+# ----------------------
+
+# Links:
+# Github - https://github.com/Minkek/skdev
+
+# Read Before Using The Skript:
+
+# Dependencies:
+# Skript Download link: https://github.com/SkriptLang/Skript/releases
+# Skquery (For version checks) Download link: https://github.com/SkQuery/SkQuery/releases 
+
+# Disable Version Checks:
+# If you want to disable version checking or don't want to install skquery comment these lines:
+# 91-93
+
+# Translate the Skript:
+# If you want to help translate the skript to other languages message me on Discord: Minkek#5025
+# I'll put you in the contributors (Just don't translate it using google translate. It doesn't really give accurate translations)
+
+options:
+	#You shouldn't change these
+	version: 1.0 #Version of The Skript
+	pagelink: https://github.com/Minkek/skdev
+	url: <url:https://github.com/Minkek/skdev>
+
+#=======#=======#=======#=======#=======#=======#=======#=======#
+#				Config				#
+
+#				Skript File Location				#
+
+	skriptpath: default
+	#Path to the skript from scripts folder (Leave it as default if it isn't in any folder)
+	#The path should look like this if there is one folder: folder/ More than one folder: folder1/folder2/
+
+#				Language				#
+
+#				General				#
+
+	prefix: &5SKDEV &8| #Prefix before each message
+	no_permission: &4You don't have permission to use that command!
+	only_players: &4This command is only available to players!
+	skriptpage_text: <tooltip:&7Click this to &bview &7the &bskript's page>
+	newversion: A new version is available
+
+
+
+#				Help				#
+
+	help_top: &7----- &8| &6Help &8| &7-----
+	help: &8- &f/skdev info &8- &7Shows info about the skript%nl%&8- &f/skdev reload &8- &7Reloads the Skript%nl%&8- &f/skdev var help &8- &7Shows help for variables%nl%&8- &f/skdev list help &8- &7Shows help for lists
+
+#				Variable				#
+
+	# Had to split it in 2 because it was too long for Skript to send it
+	var_help_1: &8- &f/skdev var help &8- &7Shows This%nl%&8- &f<tooltip:&bClick to use the command&7:&f /skdev variable check &e[&3variable name&e]><suggest command:/skdev variable check >/skdev var check &e[&3variable name&e] &8- &7Checks the value of the variable <reset>%nl%&8- &f<tooltip:&bClick to use the command&7:&f /skdev variable clear &e[&3variable name&e]><suggest command:/skdev variable clear >/skdev var clear &e[&3variable name&e] &8- &7Clears the variable
+	var_help_2: &8- &f<tooltip:&bClick to use the command&7: &f/skdev var set &e[&3variable name&e] &e[&3str &7(Write this only if you want to set it to a string like this ""1"" or ""true"")&e]><suggest command:/skdev variable set>/skdev var set &e[&3variable name&e] &e[&3str &7(Write this only if you want to set it to a string like this ""1"" or ""true"")&e] &8- &7Sets the value of the variable 
+	var_help_top: &7----- &8| &aVariable &6Help &8| &7-----
+	var_empty: &4You didn't set the name of the variable
+	var_nothing_to_set: &4You can't set a variable to nothing &f(<tooltip:&b/skdev variable clear [name of variable]><suggest command:/skdev variable clear >&bClick this to clear the variable<reset>)
+	# Use: <prefix> for prefix | <name> for variable name | <value> for variable value
+	var_check_successful: <prefix> &aSuccessfully checked variable %nl%<prefix> &7Variable Name: &f<name> &8| &7Value: &f<value>
+	# Use: <prefix> for prefix | <name> for variable name | <oldvalue> for old variable value | <newvalue> for new variable value
+	var_set_successful: <prefix> &aSuccessfully set variable %nl%<prefix> &7Variable Name: &f<name> &8| &7New Value: &f<newvalue> &8| &7Old Value: &f<oldvalue>
+	# Use: <prefix> for prefix | <name> for variable name
+	var_clear_successful: <prefix> &aSuccessfully cleared variable &f{<name>}
+
+#				List				#
+	list_help: &8- &f/skdev list help &8- &7Shows This%nl%&8- &f<tooltip:&bClick to use the command&7:&f /skdev list check &e[&3list name&e]><suggest command:/skdev list check >/skdev list check &e[&3list name&e] &8- &7Loops all items of a list <reset>%nl%&8- &f<tooltip:&bClick to use the command&7:&f /skdev list clear &e[&3list name&e]><suggest command:/skdev list clear >/skdev list clear &e[&3list name&e] &8- &7Clears the list
+	list_help_top: &7----- &8| &cList &6Help &8| &7-----
+	list_check_successful: <prefix> &aSuccessfully checked list &f{<name>::*}
+	list_check_failed: <prefix> &4List is empty
+	list_check_item: <prefix> &7Index: &f<index> &8| &7Value: &f<value>
+	list_cant_set: &7<tooltip:&bClick to use the command&7: &f/skdev var set &e[&3list::index of the item &7(You can get it from the ""/skdev list check command)""&e]><suggest command:/skdev var set> You can't set the whole list to one thing if you want to set a list item do &bclick this&7.
+	list_clear_successful: <prefix> &aSuccessfully cleared list &f{<name>::*}
+
+#				Reload				#
+	reload_start: &7Started Reloading &5SKDEV
+	reload_successful: &aSuccessfully reloaded &5SKDEV
+
+
+
+# If you want to change the skript do it 
+# And if you find any bugs or you optimize it message me on Discord: Minkek#5025
+
+# This is the version check. Comment lines bellow to disable it (If you don't want to disable it or you don't know how to do it: ! Install Skquery !)
+
+on load:
+	if "{@version}" is not text from "https://raw.githubusercontent.com/Minkek/skdev/main/version":
+		send "[SKDEV] &fThere was an update of &5SKDEV&f!%nl%&f[SKDEV] &bDownload it here: &f{@pagelink}" to console
+
+# Comment to this point to disable it
+
+# Code
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+on skript load:
+	send "[SKDEV] Loaded SkDev v{@version} made by Minkek"
+
+on load:
+	if {reloader} is set:
+		send "{@prefix} {@reload_successful}" to {reloader}
+		send "{@reload_successful}" to console
+	else:
+		if {reloader} is "c":
+			send "{@reload_successful}" to console
+
+command /skdev [<text>] [<text>] [<text>] [<text>] [<text>]:
+	trigger:
+		if executor is player:
+			if player doesn't have permission "skdev" or "skdev.*":
+				send "{@prefix} {@no_permission}"
+				stop
+		if arg 1 is "info":
+			send "&7----- &5SKDEV &7INFO &7-----"
+			send " "
+			send "{@prefix} &fVersion: {@skriptpage_text}{@url}{@version}"
+			send "{@prefix} &f{@skriptpage_text}{@url}Check for updates: {@pagelink}"
+			send "{@prefix} &fMade by Minkek"
+			send " "
+			send "&7----- &5SKDEV &7INFO &7-----"
+			stop
+
+		if arg 1 is "reload":
+			if executor is player:
+				set {reloader} to player
+				send "{@prefix} {@reload_start}"
+				send "{@reload_start}" to console
+				if "{@skriptpath}" is "default":
+					make console execute command "sk reload skdev.sk"
+				else:				
+					make console execute command "sk reload {@skriptpath}skdev.sk"
+			if executor is console:
+				send "{@reload_start}" to console
+				set {reloader} to "c"
+				if "{@skriptpath}" is "default":
+					make console execute command "sk reload skdev.sk"
+				else:
+					make console execute command "sk reload {@skriptpath}skdev.sk"
+		if arg 1 is "help":
+			send "{@help_top}"
+			send "{@help}"
+			send "{@help_top}"
+			stop
+		if arg 1 is "var" or "variable" or "v":
+			if arg 2 isn't "check" or "set" or "clear" or "s" or "c" or "cc":
+				send "{@var_help_top}"
+				send "{@var_help_1}"
+				send "{@var_help_2}"
+				send "{@var_help_top}"
+				stop
+
+			if arg 3 is not set:
+				send "{@prefix} {@var_empty}"
+				stop
+			if arg 2 is "check" or "c":
+				set {_message} to "{@var_check_successful}"
+				replace all "<name>" in {_message} with arg 3
+				replace all "<value>" in {_message} with "%{%arg 3%}%"
+				replace all "<prefix>" in {_message} with "{@prefix}"
+				send "%{_message}%"
+				stop
+			if arg 2 is "set" or "s":
+				if arg 4 is not set:
+					send "{@prefix} {@var_nothing_to_set}"
+					stop
+				# This is if you want to set something to string if you need any number ex. "1" or "true" or "false"
+				if arg 5 is "string" or "str" or "text":
+					set {_setthing} to arg 4
+				else:
+					# Automatic checking (90% of the time the user would like it)
+					if arg 4 is "true" or "false":
+						if arg 4 is "true":
+							set {_setthing} to true
+						else:
+							set {_setthing} to false
+					else:
+						if arg 4 parsed as a number is a number:
+							set {_setthing} to arg 4 parsed as a number
+						else:
+							set {_setthing} to arg 4
+				set {_message} to "{@var_set_successful}"
+				replace all "<name>" in {_message} with arg 3
+				# "" this is only used to show that the value was a text its not in the value of the actual variable
+				if {%arg 3%} is a text:
+					replace all "<oldvalue>" in {_message} with """%{%arg 3%}%"""
+				else:
+					replace all "<oldvalue>" in {_message} with "%{%arg 3%}%"
+				if {_setthing} is a text:
+					replace all "<newvalue>" in {_message} with """%{_setthing}%"""
+				else:
+					replace all "<newvalue>" in {_message} with "%{_setthing}%"
+				replace all "<prefix>" in {_message} with "{@prefix}"
+				send "%{_message}%"
+				set {%arg 3%} to {_setthing}
+				stop
+
+			if arg 2 is "clear" or "cc":
+				set {_message} to "{@var_clear_successful}"
+				replace all "<name>" in {_message} with arg 3
+				replace all "<prefix>" in {_message} with "{@prefix}"
+				send "%{_message}%"
+				clear {%arg 3%}
+				stop
+		if arg 1 is "list" or "l":
+			if arg 2 isn't "clear" or "check" or "c" or "cc":
+				if arg 2 is "set" or "s":
+					send "{@prefix} {@list_cant_set}"
+					stop
+				send "{@list_help_top}"
+				send "{@list_help}"
+				send "{@list_help_top}"
+				stop
+			if arg 2 is "clear" or "cc":
+				set {_message} to "{@list_clear_successful}"
+				replace all "<name>" in {_message} with arg 3
+				replace all "<prefix>" in {_message} with "{@prefix}"
+				send "%{_message}%"
+				clear {%arg 3%::*}
+				stop
+			if arg 2 is "check" or "c":
+				if {%arg 3%::*} is not set:
+					set {_message} to "{@list_check_failed}"
+					replace all "<prefix>" in {_message} with "{@prefix}"
+					send "%{_message}%"
+					stop
+				set {_message} to "{@list_check_successful}"
+				replace all "<name>" in {_message} with arg 3
+				replace all "<prefix>" in {_message} with "{@prefix}"
+				send "%{_message}%"
+				loop {%arg 3%::*}:
+					set {_message} to "{@list_check_item}"
+					replace all "<index>" in {_message} with loop-index
+					if loop-value is a text:
+						replace all "<value>" in {_message} with """%loop-value%"""
+					else:
+						replace all "<value>" in {_message} with "%loop-value%"
+					replace all "<prefix>" in {_message} with "{@prefix}"
+					send "%{_message}%"
+				stop
