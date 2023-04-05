@@ -1,5 +1,5 @@
 # ----------------------
-# Skdev v1.0
+# Skdev v1.1
 # 
 # Made by Minkek
 # ----------------------
@@ -11,11 +11,10 @@
 
 # Dependencies:
 # Skript Download link: https://github.com/SkriptLang/Skript/releases
-# Skquery (For version checks) Download link: https://github.com/SkQuery/SkQuery/releases 
+# Skquery Download link: https://github.com/SkQuery/SkQuery/releases 
 
-# Disable Version Checks:
-# If you want to disable version checking or don't want to install skquery comment these lines:
-# 91-93
+# If you don't want a warning every time you reload change this in the skript (! Skript plugin not this skript !) config:
+# disable starting a variable's name with an expression warnings: true
 
 # Translate the Skript:
 # If you want to help translate the skript to other languages message me on Discord: Minkek#5025
@@ -23,9 +22,9 @@
 
 options:
 	#You shouldn't change these
-	version: 1.0 #Version of The Skript
-	pagelink: https://github.com/Minkek/skdev
-	url: <url:https://github.com/Minkek/skdev>
+	version: 1.1 #Version of The Skript
+	pagelink: https://github.com/Minkek/skdev/releases/latest
+	url: <url:https://github.com/Minkek/skdev/releases/latest>
 
 #=======#=======#=======#=======#=======#=======#=======#=======#
 #				Config				#
@@ -47,7 +46,6 @@ options:
 	newversion: A new version is available
 
 
-
 #				Help				#
 
 	help_top: &7----- &8| &6Help &8| &7-----
@@ -59,7 +57,7 @@ options:
 	var_help_1: &8- &f/skdev var help &8- &7Shows This%nl%&8- &f<tooltip:&bClick to use the command&7:&f /skdev variable check &e[&3variable name&e]><suggest command:/skdev variable check >/skdev var check &e[&3variable name&e] &8- &7Checks the value of the variable <reset>%nl%&8- &f<tooltip:&bClick to use the command&7:&f /skdev variable clear &e[&3variable name&e]><suggest command:/skdev variable clear >/skdev var clear &e[&3variable name&e] &8- &7Clears the variable
 	var_help_2: &8- &f<tooltip:&bClick to use the command&7: &f/skdev var set &e[&3variable name&e] &e[&3str &7(Write this only if you want to set it to a string like this ""1"" or ""true"")&e]><suggest command:/skdev variable set>/skdev var set &e[&3variable name&e] &e[&3str &7(Write this only if you want to set it to a string like this ""1"" or ""true"")&e] &8- &7Sets the value of the variable 
 	var_help_top: &7----- &8| &aVariable &6Help &8| &7-----
-	var_empty: &4You didn't set the name of the variable
+	var_empty: <prefix> &4You didn't set the name of the variable (arg 3)
 	var_nothing_to_set: &4You can't set a variable to nothing &f(<tooltip:&b/skdev variable clear [name of variable]><suggest command:/skdev variable clear >&bClick this to clear the variable<reset>)
 	# Use: <prefix> for prefix | <name> for variable name | <value> for variable value
 	var_check_successful: <prefix> &aSuccessfully checked variable %nl%<prefix> &7Variable Name: &f<name> &8| &7Value: &f<value>
@@ -69,6 +67,8 @@ options:
 	var_clear_successful: <prefix> &aSuccessfully cleared variable &f{<name>}
 
 #				List				#
+	# If I used <prefix> its for the prefix
+
 	list_help: &8- &f/skdev list help &8- &7Shows This%nl%&8- &f<tooltip:&bClick to use the command&7:&f /skdev list check &e[&3list name&e]><suggest command:/skdev list check >/skdev list check &e[&3list name&e] &8- &7Loops all items of a list <reset>%nl%&8- &f<tooltip:&bClick to use the command&7:&f /skdev list clear &e[&3list name&e]><suggest command:/skdev list clear >/skdev list clear &e[&3list name&e] &8- &7Clears the list
 	list_help_top: &7----- &8| &cList &6Help &8| &7-----
 	list_check_successful: <prefix> &aSuccessfully checked list &f{<name>::*}
@@ -76,6 +76,7 @@ options:
 	list_check_item: <prefix> &7Index: &f<index> &8| &7Value: &f<value>
 	list_cant_set: &7<tooltip:&bClick to use the command&7: &f/skdev var set &e[&3list::index of the item &7(You can get it from the ""/skdev list check command)""&e]><suggest command:/skdev var set> You can't set the whole list to one thing if you want to set a list item do &bclick this&7.
 	list_clear_successful: <prefix> &aSuccessfully cleared list &f{<name>::*}
+	list_empty: <prefix> &4You didn't set the list name (arg 3)
 
 #				Reload				#
 	reload_start: &7Started Reloading &5SKDEV
@@ -86,28 +87,7 @@ options:
 # If you want to change the skript do it 
 # And if you find any bugs or you optimize it message me on Discord: Minkek#5025
 
-# This is the version check. Comment lines bellow to disable it (If you don't want to disable it or you don't know how to do it: ! Install Skquery !)
-
-on load:
-	if "{@version}" is not text from "https://raw.githubusercontent.com/Minkek/skdev/main/version":
-		send "[SKDEV] &fThere was an update of &5SKDEV&f!%nl%&f[SKDEV] &bDownload it here: &f{@pagelink}" to console
-
-# Comment to this point to disable it
-
 # Code
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 on skript load:
 	send "[SKDEV] Loaded SkDev v{@version} made by Minkek"
@@ -120,12 +100,23 @@ on load:
 		if {reloader} is "c":
 			send "{@reload_successful}" to console
 
+on load:
+	if "{@version}" is not text from "https://raw.githubusercontent.com/Minkek/skdev/main/version":
+		send "%nl%[SKDEV] &fThere was an update of &5SKDEV&f!%nl%&f[SKDEV] &bDownload it here: &f{@pagelink}%nl%" to console
+		if {reloader} is set:
+			send "%nl%{@prefix} &fThere was an update of &5SKDEV&f!%nl%&f{@url}{@prefix} &bDownload it here: &f{@pagelink}%nl%" to {reloader}
+
 command /skdev [<text>] [<text>] [<text>] [<text>] [<text>]:
 	trigger:
 		if executor is player:
 			if player doesn't have permission "skdev" or "skdev.*":
 				send "{@prefix} {@no_permission}"
 				stop
+
+		# --------
+		# Info
+		# --------
+				
 		if arg 1 is "info":
 			send "&7----- &5SKDEV &7INFO &7-----"
 			send " "
@@ -135,6 +126,10 @@ command /skdev [<text>] [<text>] [<text>] [<text>] [<text>]:
 			send " "
 			send "&7----- &5SKDEV &7INFO &7-----"
 			stop
+			
+		# --------
+		# Reload
+		# --------
 
 		if arg 1 is "reload":
 			if executor is player:
@@ -152,12 +147,24 @@ command /skdev [<text>] [<text>] [<text>] [<text>] [<text>]:
 					make console execute command "sk reload skdev.sk"
 				else:
 					make console execute command "sk reload {@skriptpath}skdev.sk"
+
+		# --------
+		# Help
+		# --------
+
 		if arg 1 is "help":
 			send "{@help_top}"
 			send "{@help}"
 			send "{@help_top}"
 			stop
+
+		# --------
+		# Variables
+		# --------
+
 		if arg 1 is "var" or "variable" or "v":
+
+			# Variable Help
 			if arg 2 isn't "check" or "set" or "clear" or "s" or "c" or "cc":
 				send "{@var_help_top}"
 				send "{@var_help_1}"
@@ -165,16 +172,24 @@ command /skdev [<text>] [<text>] [<text>] [<text>] [<text>]:
 				send "{@var_help_top}"
 				stop
 
-			if arg 3 is not set:
-				send "{@prefix} {@var_empty}"
-				stop
-			if arg 2 is "check" or "c":
-				set {_message} to "{@var_check_successful}"
-				replace all "<name>" in {_message} with arg 3
-				replace all "<value>" in {_message} with "%{%arg 3%}%"
+			# Fixes the variable formatting
+			set {_variablename} to formatvariableinput(arg 3)
+			if {_variablename} isn't set:
+				set {_message} to "{@var_empty}"
 				replace all "<prefix>" in {_message} with "{@prefix}"
 				send "%{_message}%"
 				stop
+			
+			# Check 
+			if arg 2 is "check" or "c":
+				set {_message} to "{@var_check_successful}"
+				replace all "<name>" in {_message} with {_variablename}
+				replace all "<value>" in {_message} with "%{%{_variablename}%}%"
+				replace all "<prefix>" in {_message} with "{@prefix}"
+				send "%{_message}%"
+				stop
+
+			# Set
 			if arg 2 is "set" or "s":
 				if arg 4 is not set:
 					send "{@prefix} {@var_nothing_to_set}"
@@ -183,42 +198,39 @@ command /skdev [<text>] [<text>] [<text>] [<text>] [<text>]:
 				if arg 5 is "string" or "str" or "text":
 					set {_setthing} to arg 4
 				else:
-					# Automatic checking (90% of the time the user would like it)
-					if arg 4 is "true" or "false":
-						if arg 4 is "true":
-							set {_setthing} to true
-						else:
-							set {_setthing} to false
-					else:
-						if arg 4 parsed as a number is a number:
-							set {_setthing} to arg 4 parsed as a number
-						else:
-							set {_setthing} to arg 4
+					set {_setthing} to autoreformattotype(arg 4)
+
 				set {_message} to "{@var_set_successful}"
-				replace all "<name>" in {_message} with arg 3
+				replace all "<name>" in {_message} with {_variablename}
 				# "" this is only used to show that the value was a text its not in the value of the actual variable
-				if {%arg 3%} is a text:
-					replace all "<oldvalue>" in {_message} with """%{%arg 3%}%"""
+				if {%{_variablename}%} is a text:
+					replace all "<oldvalue>" in {_message} with """%{%{_variablename}%}%"""
 				else:
-					replace all "<oldvalue>" in {_message} with "%{%arg 3%}%"
+					replace all "<oldvalue>" in {_message} with "%{%{_variablename}%}%"
 				if {_setthing} is a text:
 					replace all "<newvalue>" in {_message} with """%{_setthing}%"""
 				else:
 					replace all "<newvalue>" in {_message} with "%{_setthing}%"
 				replace all "<prefix>" in {_message} with "{@prefix}"
 				send "%{_message}%"
-				set {%arg 3%} to {_setthing}
+				set {%{_variablename}%} to {_setthing}
 				stop
 
 			if arg 2 is "clear" or "cc":
 				set {_message} to "{@var_clear_successful}"
-				replace all "<name>" in {_message} with arg 3
+				replace all "<name>" in {_message} with {_variablename}
 				replace all "<prefix>" in {_message} with "{@prefix}"
 				send "%{_message}%"
-				clear {%arg 3%}
+				clear {%{_variablename}%}
 				stop
+
+		# --------
+		# Lists
+		# --------
+
 		if arg 1 is "list" or "l":
 			if arg 2 isn't "clear" or "check" or "c" or "cc":
+				# You can't set a list (This is just to tell you how to set a item in a list)
 				if arg 2 is "set" or "s":
 					send "{@prefix} {@list_cant_set}"
 					stop
@@ -226,24 +238,36 @@ command /skdev [<text>] [<text>] [<text>] [<text>] [<text>]:
 				send "{@list_help}"
 				send "{@list_help_top}"
 				stop
+
+			# Makes the list only its name and stops if arg 3 isn't set
+			set {_listname} to formatlistinput(arg 3)
+			if {_listname} isn't set:
+				set {_message} to "{@list_empty}"
+				replace all "<prefix>" in {_message} with "{@prefix}"
+				send "%{_message}%"
+				stop
+			# Clear List
 			if arg 2 is "clear" or "cc":
 				set {_message} to "{@list_clear_successful}"
-				replace all "<name>" in {_message} with arg 3
+				replace all "<name>" in {_message} with {_listname}
 				replace all "<prefix>" in {_message} with "{@prefix}"
 				send "%{_message}%"
-				clear {%arg 3%::*}
+				clear {%{_listname}%::*}
 				stop
-			if arg 2 is "check" or "c":
-				if {%arg 3%::*} is not set:
-					set {_message} to "{@list_check_failed}"
-					replace all "<prefix>" in {_message} with "{@prefix}"
-					send "%{_message}%"
+			# Check list
+			if arg 2 is "check" or "c":		
+				# Check if {_listname} (Better arg 3) is set (List is not Empty)
+				
+				if listcheck_safe({_listname}, "{@list_check_failed}", executor) is false:
 					stop
+				
 				set {_message} to "{@list_check_successful}"
-				replace all "<name>" in {_message} with arg 3
+				replace all "<name>" in {_message} with {_listname}
 				replace all "<prefix>" in {_message} with "{@prefix}"
 				send "%{_message}%"
-				loop {%arg 3%::*}:
+
+				# Loop every value of arg 3 which is a list
+				loop {%{_listname}%::*}:
 					set {_message} to "{@list_check_item}"
 					replace all "<index>" in {_message} with loop-index
 					if loop-value is a text:
@@ -253,3 +277,40 @@ command /skdev [<text>] [<text>] [<text>] [<text>] [<text>]:
 					replace all "<prefix>" in {_message} with "{@prefix}"
 					send "%{_message}%"
 				stop
+
+
+function listcheck_safe(name: text, message: text, executor: executor) :: boolean:
+	if {%{_name}%::*} is not set:
+		replace all "<prefix>" in {_message} with "{@prefix}"
+		send "%{_message}%" to {_executor}
+		return false
+	return true
+
+# Formats list/variable to correct type
+function formatlistinput(input: text) :: text:
+	if {_input} contains "::*" or "{" or "}":
+		replace all "::*" in {_input} with ""
+		replace all "{" in {_input} with ""
+		replace all "}" in {_input} with ""
+	return {_input}
+
+function formatvariableinput(input: text) :: text:
+	if {_input} contains "{" or "}":
+		replace all "{" in {_input} with ""
+		replace all "}" in {_input} with ""
+	return {_input}
+
+
+function autoreformattotype(input: text) :: object:
+	# Boolean check
+	if {_input} is "true" or "false":
+		if {_input} is "true":
+			return true
+		else:
+			return false
+	
+	# Number check
+	if {_input} parsed as a number is a number:
+		return {_input} parsed as a number
+	
+	return {_input}
