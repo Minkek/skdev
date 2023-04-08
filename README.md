@@ -39,8 +39,15 @@ This part of the guide is about basic skript usage if you forget any of the comm
 ( ) are used to show opptional things ! You don't need to use them !
 
 * Check:
-  You can check variables with: **/skdev variable check [_your lists name_]**
+  You can check lists with: **/skdev list check [_your lists name_]**
   
-  It will send you what is the value for this variable
- You can check lists with /skdev list check
+  It will send you what is the value for each variable in the list
+* Clear
+
+ You clear the list with: **/skdev list clear [_your lists name_]**
+ It just does the same thing as variable clear nothing else.
+* _Set_
+ 
+ You can't set the whole list to one thing, but if you do /skdev variable check [_your lists name::index_]
+ You can get the index from checking the list and then you can set a specific variable in that list.
  
