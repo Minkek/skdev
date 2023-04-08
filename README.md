@@ -51,3 +51,14 @@ This part of the guide is about basic skript usage if you forget any of the comm
  You can't set the whole list to one thing, but if you do /skdev variable check [_your lists name::index_]
  You can get the index from checking the list and then you can set a specific variable in that list.
  
+### More advanced users
+Once you learn the basics of this skript you can start improving your speed.
+I made some shortcuts to improve the speed (Use them instead of the words once you learn the basics) is the list:
+* variable | var | v
+* list | l
+* check | c
+* set | s
+* clear | cc
+* string | str | s | text
+* info | i
+* reload | r
