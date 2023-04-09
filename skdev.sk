@@ -1,5 +1,5 @@
 # ----------------------
-# Skdev v1.1
+# Skdev v1.2
 # 
 # Made by Minkek
 # ----------------------
@@ -22,9 +22,12 @@
 
 options:
 	#You shouldn't change these
-	version: 1.1 #Version of The Skript
-	pagelink: https://github.com/Minkek/skdev/releases/latest
-	url: <url:https://github.com/Minkek/skdev/releases/latest>
+	version: 1.2 #Version of The Skript
+	pagelink: https://www.spigotmc.org/resources/skript-skdev.108903/updates
+	githublink: https://github.com/Minkek/skdev
+	pageurl: <url:https://www.spigotmc.org/resources/skript-skdev.108903/updates>
+	githuburl: <url:https://github.com/Minkek/skdev>
+
 
 #=======#=======#=======#=======#=======#=======#=======#=======#
 #				Config				#
@@ -43,6 +46,8 @@ options:
 	no_permission: &4You don't have permission to use that command!
 	only_players: &4This command is only available to players!
 	skriptpage_text: <tooltip:&7Click this to &bview &7the &bskript's page>
+	github_text: <tooltip:&7Click this to &bview &7the &bskript's github>
+	guide_text: <tooltip:&7Click this to &bview &7the &bguide>
 	newversion: A new version is available
 
 
@@ -93,18 +98,23 @@ on skript load:
 	send "[SKDEV] Loaded SkDev v{@version} made by Minkek"
 
 on load:
+	if {reloader} is "c":
+		send "{@reload_successful}" to console
+		stop
 	if {reloader} is set:
 		send "{@prefix} {@reload_successful}" to {reloader}
 		send "{@reload_successful}" to console
-	else:
-		if {reloader} is "c":
-			send "{@reload_successful}" to console
+		stop
+
 
 on load:
 	if "{@version}" is not text from "https://raw.githubusercontent.com/Minkek/skdev/main/version":
-		send "%nl%[SKDEV] &fThere was an update of &5SKDEV&f!%nl%&f[SKDEV] &bDownload it here: &f{@pagelink}%nl%" to console
+		send "%nl%[SKDEV] &fThere was an update of &5SKDEV&f!%nl%&f[SKDEV] &bDownload it here: &f{@pagelink}" to console
+		set {_updatemessage} to text from "https://raw.githubusercontent.com/Minkek/skdev/main/Update%%20Message"
+		send "[SKDEV] &fUpdate Message: &b%{_updatemessage}%&f%nl%"
 		if {reloader} is set:
-			send "%nl%{@prefix} &fThere was an update of &5SKDEV&f!%nl%&f{@url}{@prefix} &bDownload it here: &f{@pagelink}%nl%" to {reloader}
+			send "%nl%{@prefix} &fThere was an update of &5SKDEV&f!%nl%&f{@pageurl}{@prefix} &bDownload it here: &f{@pagelink}" to {reloader}
+			send "{@prefix} &fUpdate Message: &b%{_updatemessage}%&f%nl%" to {reloader}
 
 command /skdev [<text>] [<text>] [<text>] [<text>] [<text>]:
 	trigger:
@@ -117,12 +127,14 @@ command /skdev [<text>] [<text>] [<text>] [<text>] [<text>]:
 		# Info
 		# --------
 				
-		if arg 1 is "info":
+		if arg 1 is "info" or "i":
 			send "&7----- &5SKDEV &7INFO &7-----"
 			send " "
-			send "{@prefix} &fVersion: {@skriptpage_text}{@url}{@version}"
-			send "{@prefix} &f{@skriptpage_text}{@url}Check for updates: {@pagelink}"
-			send "{@prefix} &fMade by Minkek"
+			send "{@prefix} &fVersion: {@skriptpage_text}{@pageurl}{@version}"
+			send "{@prefix} &f{@skriptpage_text}{@pageurl}Check for updates: {@pagelink}"
+			send "{@prefix} &f{@github_text}{@githuburl}Github: {@githublink}"
+			send "{@prefix} &f{@guide_text}<url:https://github.com/Minkek/skdev##guide>Guide: https://github.com/Minkek/skdev##guide" #You can't put # inside of options
+			send "{@prefix} &fMade by Minkek | Discord: Minkek#5025"
 			send " "
 			send "&7----- &5SKDEV &7INFO &7-----"
 			stop
@@ -131,7 +143,7 @@ command /skdev [<text>] [<text>] [<text>] [<text>] [<text>]:
 		# Reload
 		# --------
 
-		if arg 1 is "reload":
+		if arg 1 is "reload" or "r":
 			if executor is player:
 				set {reloader} to player
 				send "{@prefix} {@reload_start}"
@@ -152,7 +164,7 @@ command /skdev [<text>] [<text>] [<text>] [<text>] [<text>]:
 		# Help
 		# --------
 
-		if arg 1 is "help":
+		if arg 1 is "help" or "h":
 			send "{@help_top}"
 			send "{@help}"
 			send "{@help_top}"
@@ -175,18 +187,12 @@ command /skdev [<text>] [<text>] [<text>] [<text>] [<text>]:
 			# Fixes the variable formatting
 			set {_variablename} to formatvariableinput(arg 3)
 			if {_variablename} isn't set:
-				set {_message} to "{@var_empty}"
-				replace all "<prefix>" in {_message} with "{@prefix}"
-				send "%{_message}%"
+				send replacetextinmessage("{@var_empty}","<prefix>","{@prefix}")
 				stop
 			
 			# Check 
 			if arg 2 is "check" or "c":
-				set {_message} to "{@var_check_successful}"
-				replace all "<name>" in {_message} with {_variablename}
-				replace all "<value>" in {_message} with "%{%{_variablename}%}%"
-				replace all "<prefix>" in {_message} with "{@prefix}"
-				send "%{_message}%"
+				send replacetextinmessage("{@var_check_successful}",("<prefix>", "<name>" and "<value>"),("{@prefix}", "%{_variablename}%" and "%{%{_variablename}%}%"))
 				stop
 
 			# Set
@@ -194,33 +200,23 @@ command /skdev [<text>] [<text>] [<text>] [<text>] [<text>]:
 				if arg 4 is not set:
 					send "{@prefix} {@var_nothing_to_set}"
 					stop
+				
 				# This is if you want to set something to string if you need any number ex. "1" or "true" or "false"
-				if arg 5 is "string" or "str" or "text":
+				if arg 5 is "string" or "str" or "text" or "s":
 					set {_setthing} to arg 4
 				else:
 					set {_setthing} to autoreformattotype(arg 4)
-
-				set {_message} to "{@var_set_successful}"
-				replace all "<name>" in {_message} with {_variablename}
-				# "" this is only used to show that the value was a text its not in the value of the actual variable
+				
 				if {%{_variablename}%} is a text:
-					replace all "<oldvalue>" in {_message} with """%{%{_variablename}%}%"""
-				else:
-					replace all "<oldvalue>" in {_message} with "%{%{_variablename}%}%"
+					add 3 to {_numbers::*}
 				if {_setthing} is a text:
-					replace all "<newvalue>" in {_message} with """%{_setthing}%"""
-				else:
-					replace all "<newvalue>" in {_message} with "%{_setthing}%"
-				replace all "<prefix>" in {_message} with "{@prefix}"
-				send "%{_message}%"
+					add 4 to {_numbers::*}
+				send replacetextinmessage("{@var_set_successful}",("<prefix>", "<name>", "<oldvalue>", and "<newvalue>"),("{@prefix}", "%{_variablename}%", "%{%{_variablename}%}%" and "%{_setthing}%"),{_numbers::*})
 				set {%{_variablename}%} to {_setthing}
 				stop
 
-			if arg 2 is "clear" or "cc":
-				set {_message} to "{@var_clear_successful}"
-				replace all "<name>" in {_message} with {_variablename}
-				replace all "<prefix>" in {_message} with "{@prefix}"
-				send "%{_message}%"
+			if arg 2 is "clear" or "cc":	
+				send replacetextinmessage("{@var_clear_successful}",("<prefix>" and "<name>"),("{@prefix}" and "%{_variablename}%"	))
 				clear {%{_variablename}%}
 				stop
 
@@ -242,47 +238,36 @@ command /skdev [<text>] [<text>] [<text>] [<text>] [<text>]:
 			# Makes the list only its name and stops if arg 3 isn't set
 			set {_listname} to formatlistinput(arg 3)
 			if {_listname} isn't set:
-				set {_message} to "{@list_empty}"
-				replace all "<prefix>" in {_message} with "{@prefix}"
-				send "%{_message}%"
+				send replacetextinmessage("{@list_empty}","<prefix>","{@prefix}")
 				stop
+			
 			# Clear List
-			if arg 2 is "clear" or "cc":
-				set {_message} to "{@list_clear_successful}"
-				replace all "<name>" in {_message} with {_listname}
-				replace all "<prefix>" in {_message} with "{@prefix}"
-				send "%{_message}%"
+			if arg 2 is "clear" or "cc":		
+				send replacetextinmessage("{@list_clear_successful}",("<prefix>" and "<name>"),("{@prefix}" and "%{_listname}%"))
 				clear {%{_listname}%::*}
 				stop
 			# Check list
 			if arg 2 is "check" or "c":		
-				# Check if {_listname} (Better arg 3) is set (List is not Empty)
+				# Check if {_listname} is set (List is not Empty)
 				
 				if listcheck_safe({_listname}, "{@list_check_failed}", executor) is false:
 					stop
 				
-				set {_message} to "{@list_check_successful}"
-				replace all "<name>" in {_message} with {_listname}
-				replace all "<prefix>" in {_message} with "{@prefix}"
-				send "%{_message}%"
+				send replacetextinmessage("{@list_check_successful}",("<prefix>" and "<name>"),("{@prefix}" and "%{_listname}%"))
 
 				# Loop every value of arg 3 which is a list
 				loop {%{_listname}%::*}:
-					set {_message} to "{@list_check_item}"
-					replace all "<index>" in {_message} with loop-index
 					if loop-value is a text:
-						replace all "<value>" in {_message} with """%loop-value%"""
-					else:
-						replace all "<value>" in {_message} with "%loop-value%"
-					replace all "<prefix>" in {_message} with "{@prefix}"
-					send "%{_message}%"
+						add 3 to {_numbers::*}
+					send replacetextinmessage("{@list_check_item}",("<prefix>", "<index>" and "<value>"),("{@prefix}", "%loop-index%" and "%loop-value%"),{_numbers::*})
 				stop
 
 
+
+# Check if list is set (Not empty)
 function listcheck_safe(name: text, message: text, executor: executor) :: boolean:
-	if {%{_name}%::*} is not set:
-		replace all "<prefix>" in {_message} with "{@prefix}"
-		send "%{_message}%" to {_executor}
+	if {%{_name}%::*} is not set:		
+		send replacetextinmessage({_message},"<prefix>","{@prefix}") to {_executor}
 		return false
 	return true
 
@@ -300,7 +285,7 @@ function formatvariableinput(input: text) :: text:
 		replace all "}" in {_input} with ""
 	return {_input}
 
-
+# Changes the string into correct type
 function autoreformattotype(input: text) :: object:
 	# Boolean check
 	if {_input} is "true" or "false":
@@ -314,3 +299,67 @@ function autoreformattotype(input: text) :: object:
 		return {_input} parsed as a number
 	
 	return {_input}
+
+
+
+
+# Replaces text with other text
+
+# Errors and what they mean:
+# Error-1 - Lists aren't the same lenght
+# Error-2 - The message that you want to replace has to contain all of the text which you want to replace
+# Error-3 - There can't be more numbers than texts
+# Error-4 - The nubmers have to correspond to words, so they have to be at least 1
+# Error-5 - The nubmers have to correspond to words, so they cant' be higher than the index of the last word
+
+function replacetextinmessage(replacemessage: text,replacethis: texts, replacewith: texts,replacewithstringindicator: numbers=0) :: text:
+
+	# Check 1: Lenght
+	if size of {_replacethis::*} != size of {_replacewith::*}:
+		set {_errormessage} to "&4Error &fwhen calling function replacetextinmessage%nl%&4Error-1&f%nl%&fMessage: Size of both lists &cmust &7be equal"
+		send {_errormessage} to console
+		return {_errormessage}
+
+	# Check 2: All replacethis text is in the message that you want to replace (replacemessage)
+	loop size of {_replacethis::*} times:
+		if {_replacemessage} doesn't contain {_replacethis::%loop-number%}:
+			set {_errormessage} to "&4Error &fwhen calling function replacetextinmessage%nl%&4Error-2&f%nl%&fMessage: The message doesn't contain some of the texts to replace"
+			send {_errormessage} to console
+			return {_errormessage}
+
+	
+	if {_replacewithstringindicator::*} is 0:
+		loop size of {_replacethis::*} times:
+			replace all {_replacethis::%loop-number%} in {_replacemessage} with {_replacewith::%loop-number%}
+		return {_replacemessage}
+	
+
+	# This is the code for putting text in string indecators. (For this skript they are: "")
+	# If you don't put anything in the last parameter this won't do activate
+
+	# Check 3: There is more or an equal amount of texts to replace than numbers
+	if size of {_replacewithstringindicator::*} > size of {_replacethis::*}:
+		set {_errormessage} to "&4Error &fwhen calling function replacetextinmessage%nl%&4Error-3&f%nl%&fMessage: There are more numbers than there are texts to replace"
+		send {_errormessage} to console
+		return {_errormessage}
+
+	loop size of {_replacewithstringindicator::*} times:
+		# Check 4: All numbers are more than 0
+		if 0 >= {_replacewithstringindicator::%loop-number%}:
+			set {_errormessage} to "&4Error &fwhen calling function replacetextinmessage%nl%&4Error-4&f%nl%&fMessage: A number was less or equal to 0"
+			send {_errormessage} to console
+			return {_errormessage}
+		#Check 5: All numbers are smaller than the size of replacethis
+		if {_replacewithstringindicator::%loop-number%} > size of {_replacethis::*}:
+			set {_errormessage} to "&4Error &fwhen calling function replacetextinmessage%nl%&4Error-5&f%nl%&fMessage: A number was more than the size of replacethis"
+			send {_errormessage} to console
+			return {_errormessage}
+	
+	set {_numindex} to 1
+	loop size of {_replacethis::*} times:
+		if loop-number is {_replacewithstringindicator::%{_numindex}%}:
+			replace all {_replacethis::%loop-number%} in {_replacemessage} with """%{_replacewith::%loop-number%}%"""
+			set {_numindex} to {_numindex} + 1
+		else:
+			replace all {_replacethis::%loop-number%} in {_replacemessage} with {_replacewith::%loop-number%}
+	return {_replacemessage}
