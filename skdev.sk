@@ -1,5 +1,5 @@
 # ----------------------
-# Skdev v1.2
+# Skdev v1.2.1
 # 
 # Made by Minkek
 # ----------------------
@@ -22,7 +22,7 @@
 
 options:
 	#You shouldn't change these
-	version: 1.2 #Version of The Skript
+	version: 1.2.1 #Version of The Skript
 	pagelink: https://www.spigotmc.org/resources/skript-skdev.108903/updates
 	githublink: https://github.com/Minkek/skdev
 	pageurl: <url:https://www.spigotmc.org/resources/skript-skdev.108903/updates>
@@ -35,8 +35,8 @@ options:
 #				Skript File Location				#
 
 	skriptpath: default
-	#Path to the skript from scripts folder (Leave it as default if it isn't in any folder)
-	#The path should look like this if there is one folder: folder/ More than one folder: folder1/folder2/
+	# Path to the skript from scripts folder (Leave it as default if it isn't in any folder)
+	# The path should look like this if there is one folder: folder/ More than one folder: folder1/folder2/
 
 #				Language				#
 
@@ -45,11 +45,13 @@ options:
 	prefix: &5SKDEV &8| #Prefix before each message
 	no_permission: &4You don't have permission to use that command!
 	only_players: &4This command is only available to players!
+	newversion: A new version is available
+	no_command: &4This command doesn't exist type &6/skdev help &4for the list of commands or &6/skdev info &4for the guide
+
+#				Info				#
 	skriptpage_text: <tooltip:&7Click this to &bview &7the &bskript's page>
 	github_text: <tooltip:&7Click this to &bview &7the &bskript's github>
 	guide_text: <tooltip:&7Click this to &bview &7the &bguide>
-	newversion: A new version is available
-
 
 #				Help				#
 
@@ -98,22 +100,22 @@ on skript load:
 	send "[SKDEV] Loaded SkDev v{@version} made by Minkek"
 
 on load:
-	if {reloader} is "c":
-		send "{@reload_successful}" to console
-		stop
 	if {reloader} is set:
 		send "{@prefix} {@reload_successful}" to {reloader}
 		send "{@reload_successful}" to console
 		stop
+	
+	send "{@reload_successful}" to console
+	stop
 
-
+# Update Informator
 on load:
 	if "{@version}" is not text from "https://raw.githubusercontent.com/Minkek/skdev/main/version":
 		send "%nl%[SKDEV] &fThere was an update of &5SKDEV&f!%nl%&f[SKDEV] &bDownload it here: &f{@pagelink}" to console
 		set {_updatemessage} to text from "https://raw.githubusercontent.com/Minkek/skdev/main/Update%%20Message"
 		send "[SKDEV] &fUpdate Message: &b%{_updatemessage}%&f%nl%"
 		if {reloader} is set:
-			send "%nl%{@prefix} &fThere was an update of &5SKDEV&f!%nl%&f{@pageurl}{@prefix} &bDownload it here: &f{@pagelink}" to {reloader}
+			send "%nl%{@prefix} &fThere was an update of &5SKDEV&f!%nl%&f{@skriptpage_text}{@pageurl}{@prefix} &bDownload it here: &f{@pagelink}" to {reloader}
 			send "{@prefix} &fUpdate Message: &b%{_updatemessage}%&f%nl%" to {reloader}
 
 command /skdev [<text>] [<text>] [<text>] [<text>] [<text>]:
@@ -134,7 +136,7 @@ command /skdev [<text>] [<text>] [<text>] [<text>] [<text>]:
 			send "{@prefix} &f{@skriptpage_text}{@pageurl}Check for updates: {@pagelink}"
 			send "{@prefix} &f{@github_text}{@githuburl}Github: {@githublink}"
 			send "{@prefix} &f{@guide_text}<url:https://github.com/Minkek/skdev##guide>Guide: https://github.com/Minkek/skdev##guide" #You can't put # inside of options
-			send "{@prefix} &fMade by Minkek | Discord: Minkek#5025"
+			send "{@prefix} &fMade by Minkek | Discord: Minkek##5025"
 			send " "
 			send "&7----- &5SKDEV &7INFO &7-----"
 			stop
@@ -152,13 +154,15 @@ command /skdev [<text>] [<text>] [<text>] [<text>] [<text>]:
 					make console execute command "sk reload skdev.sk"
 				else:				
 					make console execute command "sk reload {@skriptpath}skdev.sk"
+				stop
 			if executor is console:
 				send "{@reload_start}" to console
-				set {reloader} to "c"
+				clear {reloader}
 				if "{@skriptpath}" is "default":
 					make console execute command "sk reload skdev.sk"
 				else:
 					make console execute command "sk reload {@skriptpath}skdev.sk"
+				stop
 
 		# --------
 		# Help
@@ -261,8 +265,12 @@ command /skdev [<text>] [<text>] [<text>] [<text>] [<text>]:
 						add 3 to {_numbers::*}
 					send replacetextinmessage("{@list_check_item}",("<prefix>", "<index>" and "<value>"),("{@prefix}", "%loop-index%" and "%loop-value%"),{_numbers::*})
 				stop
+		
+		# A response when the command isn't typed right
+		send "{@no_command}"
 
 
+# Functions
 
 # Check if list is set (Not empty)
 function listcheck_safe(name: text, message: text, executor: executor) :: boolean:
@@ -334,7 +342,7 @@ function replacetextinmessage(replacemessage: text,replacethis: texts, replacewi
 		return {_replacemessage}
 	
 
-	# This is the code for putting text in string indecators. (For this skript they are: "")
+	# This is the code for putting text in string indicators. (For this skript they are: "")
 	# If you don't put anything in the last parameter this won't do activate
 
 	# Check 3: There is more or an equal amount of texts to replace than numbers
